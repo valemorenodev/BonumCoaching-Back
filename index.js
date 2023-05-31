@@ -13,7 +13,7 @@ const app = express();
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 
-const Routes = require("./Routers/Auth");
+const Routes = require("./Routers/routes.js");
 
 app.use(express.json());
 
