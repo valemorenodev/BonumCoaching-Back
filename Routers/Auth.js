@@ -58,7 +58,7 @@ router.post('/register', async (req, res) => {
 // Login route
 
 router.post('/login', async (req, res) => {
-  // validaciones
+  // Validations
   const { error } = schemaLogin.validate(req.body);
   if (error) return res.status(400).json({ error: error.details[0].message })
 
@@ -71,6 +71,17 @@ router.post('/login', async (req, res) => {
   res.json({
     error: null,
     data: 'exito bienvenido'
+  })
+
+  // Create token
+  const token = jwt.sign({
+    name: user.name,
+    id: user._id
+  }, process.env.TOKEN_SECRET)
+
+  res.header('auth-token', token).json({
+    error: null,
+    data: { token }
   })
 })
 

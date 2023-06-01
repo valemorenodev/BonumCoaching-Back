@@ -4,6 +4,10 @@ const mongoose = require('mongoose');
 const bodyparser = require('body-parser');
 const cors = require('cors');
 
+// import routes
+const dashboadRoutes = require('./routes/Dashboard');
+const verifyToken = require('./routes/validateToken');
+
 require('dotenv').config()
 
 const port = 3030;
@@ -40,7 +44,8 @@ mongoose.connect(process.env.MONGO_URI, connectionOptions)
   .catch((err) =>
     console.error(err));
 
-app.use("/App", Routes);
+// Route middlewares
+app.use('/api/dashboard', verifyToken, dashboadRoutes);
 
 app.listen(port, () => {
   console.log("***---Successful connection to the port---***");
