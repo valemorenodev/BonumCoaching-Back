@@ -9,7 +9,7 @@ const bcrypt = require('bcrypt');
 const Joi = require('@hapi/joi');
 
 const schemaRegister = Joi.object({
-  name: Joi.string().min(6).max(255).required(),
+  userName: Joi.string().min(6).max(255).required(),
   email: Joi.string().min(6).max(255).required().email(),
   password: Joi.string().min(6).max(1024).required()
 })
@@ -40,7 +40,7 @@ router.post('/register', async (req, res) => {
   const password = await bcrypt.hash(req.body.password, salt);
 
   const user = new User({
-    name: req.body.name,
+    userName: req.body.userName,
     email: req.body.email,
     password: password
   });
@@ -66,6 +66,9 @@ router.get('/login', async (req, res) => {
   if (!user) return res.status(400).json({ error: 'Usuario no encontrado' });
 
   const validPassword = await bcrypt.compare(req.body.password, user.password);
+
+  console.log(user)
+
   if (!validPassword) return res.status(400).json({ error: 'contraseña no válida' })
 
   res.json({
@@ -75,7 +78,7 @@ router.get('/login', async (req, res) => {
 
   // Create token
   const token = jwt.sign({
-    name: user.name,
+    userName: user.userName,
     id: user._id
   }, process.env.TOKEN_SECRET)
 
