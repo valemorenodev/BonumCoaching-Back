@@ -61,7 +61,6 @@ router.get('/login', async (req, res) => {
   // Validations
   const { error } = schemaLogin.validate(req.body);
   if (error) return res.status(400).json({ error: error.details[0].message })
-
   const user = await User.findOne({ email: req.body.email });
   if (!user) return res.status(400).json({ error: 'Usuario no encontrado' });
 
@@ -71,20 +70,15 @@ router.get('/login', async (req, res) => {
 
   if (!validPassword) return res.status(400).json({ error: 'contraseña no válida' })
 
-  res.json({
-    error: null,
-    data: 'exito bienvenido'
-  })
-
   // Create token
   const token = jwt.sign({
     userName: user.userName,
     id: user._id
   }, process.env.TOKEN_SECRET)
-
-  res.header('auth-token', token).json({
+  res.status(200).json({
     error: null,
-    data: { token }
+    data: { token },
+    msg: 'exito bienvenido',
   })
 })
 
