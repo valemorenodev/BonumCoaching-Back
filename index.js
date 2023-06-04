@@ -5,8 +5,8 @@ const bodyparser = require('body-parser');
 const cors = require('cors');
 
 // import routes
-const dashboadRoutes = require('./routes/Dashboard');
-const verifyToken = require('./routes/validateToken');
+const dashboadRoutes = require('./Routers/Dashboard');
+const verifyToken = require('./Routers/validateToken');
 
 require('dotenv').config()
 
@@ -17,7 +17,7 @@ const app = express();
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 
-const Routes = require("./Routers/routes.js");
+const Routes = require("./Routers/Auth");
 
 app.use(express.json());
 
@@ -45,9 +45,10 @@ mongoose.connect(process.env.MONGO_URI, connectionOptions)
     console.error(err));
 
 // Route middlewares
+app.use('/api', Routes)
 app.use('/api/dashboard', verifyToken, dashboadRoutes);
 
 app.listen(port, () => {
   console.log("***---Successful connection to the port---***");
-  console.log("http://localhost:3030/App")
+  console.log("http://localhost:3030")
 })

@@ -57,7 +57,7 @@ router.post('/register', async (req, res) => {
 
 // Login route
 
-router.post('/login', async (req, res) => {
+router.get('/login', async (req, res) => {
   // Validations
   const { error } = schemaLogin.validate(req.body);
   if (error) return res.status(400).json({ error: error.details[0].message })
