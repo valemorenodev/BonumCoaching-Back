@@ -5,7 +5,7 @@ const bodyparser = require('body-parser');
 const cors = require('cors');
 
 // import routes
-const dashboadRoutes = require('./Routers/Dashboard');
+const secionsRoutes = require('./Routers/SecionsData')
 const verifyToken = require('./Routers/validateToken');
 
 require('dotenv').config()
@@ -23,7 +23,7 @@ app.use(express.json());
 
 const corsOption = {
   origin: "*",
-  method: ["GET", "POST", "PUT", "DELETE"],
+  method: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept"],
   credentials: true
 };
@@ -46,7 +46,7 @@ mongoose.connect(process.env.MONGO_URI, connectionOptions)
 
 // Route middlewares
 app.use('/api', Routes)
-app.use('/api/dashboard', verifyToken, dashboadRoutes);
+app.use('/api/secionsRoutes', verifyToken, secionsRoutes);
 
 app.listen(port, () => {
   console.log("***---Successful connection to the port---***");

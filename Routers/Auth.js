@@ -57,16 +57,16 @@ router.post('/register', async (req, res) => {
 
 // Login route
 
-router.get('/login', async (req, res) => {
+router.post('/login', async (req, res) => {
   // Validations
+  console.log(req.body, "Respuesta del front")
+
   const { error } = schemaLogin.validate(req.body);
   if (error) return res.status(400).json({ error: error.details[0].message })
   const user = await User.findOne({ email: req.body.email });
   if (!user) return res.status(400).json({ error: 'Usuario no encontrado' });
 
   const validPassword = await bcrypt.compare(req.body.password, user.password);
-
-  console.log(user)
 
   if (!validPassword) return res.status(400).json({ error: 'contraseña no válida' })
 
